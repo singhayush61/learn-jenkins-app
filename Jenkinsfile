@@ -7,13 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Initialize') {
-            steps {
-                cleanWs()
-                // Throttles npm to prevent core-overload during install
-                
-            }
-        }
+
         stage('Build') {
             agent {
                 docker {
@@ -82,7 +76,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Staging') {
+        stage('Deploy staging') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -98,7 +92,7 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build
                 '''
             }
-        }        
+        }
 
         stage('Deploy prod') {
             agent {
@@ -141,20 +135,6 @@ pipeline {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
             }
-        }
-
-    
-    }
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
-        }
-        success {
-            echo 'Deployment Successful!'
-        }
-        failure {
-            echo 'Pipeline failed. Check logs for details.'
         }
     }
 }
