@@ -10,7 +10,11 @@ pipeline {
                     reuseNode true
                 }
             }
-            
+            steps{
+                sh '''
+                npm test
+                '''
+            }
         }
 
         stage('E2E'){
