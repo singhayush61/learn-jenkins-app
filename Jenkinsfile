@@ -143,6 +143,8 @@ pipeline {
             }
         }
 
+    
+    }
     post {
         always {
             echo 'Cleaning up workspace...'
@@ -154,6 +156,5 @@ pipeline {
         failure {
             echo 'Pipeline failed. Check logs for details.'
         }
-    }
     }
 }
