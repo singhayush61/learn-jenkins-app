@@ -15,7 +15,6 @@ pipeline {
                     reuseNode true
             // This dynamically matches the container user to the Jenkins host user
                     args '-u root' 
-                    args '-u 1000:1000'
                 }
             }
             steps {
@@ -26,7 +25,7 @@ pipeline {
                     npm run build
                     '''
                 }
-        }
+            }
 
         stage('Tests') {
             parallel {
@@ -35,7 +34,6 @@ pipeline {
                         docker {
                             image 'node:18-alpine'
                             reuseNode true
-                            args '-u root'
                         }
                     }
 
@@ -57,7 +55,6 @@ pipeline {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
-                            args '-u root'
                         }
                     }
 
