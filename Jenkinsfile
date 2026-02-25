@@ -38,7 +38,7 @@ pipeline {
                 stage('Unit tests') {
                     agent {
                         docker {
-                            image 'node:18-slim'
+                            image 'node:18-alpine'
                             reuseNode true
                         }
                     }
@@ -85,7 +85,7 @@ pipeline {
         stage('Deploy Staging') {
             agent {
                 docker {
-                    image 'node:18-slim'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
@@ -103,7 +103,7 @@ pipeline {
         stage('Deploy prod') {
             agent {
                 docker {
-                    image 'node:18-slim'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
