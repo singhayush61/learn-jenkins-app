@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-    stage('E2E'){
+        stage('E2E'){
             agent{
                 docker{
                     image 'docker pull mcr.microsoft.com/playwright:v1.58.2-noble'
