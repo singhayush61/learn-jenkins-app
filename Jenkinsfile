@@ -13,19 +13,19 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+            // This dynamically matches the container user to the Jenkins host user
+                    args '-u root' 
                 }
             }
             steps {
                 sh '''
-                    ls -la
-                    node --version
-                    npm --version
+                    # Optional: ensure permissions are clean before starting
+                    chown -R root:root . 
                     npm ci
                     npm run build
-                    ls -la
-                '''
+                    '''
+                }
             }
-        }
 
         stage('Tests') {
             parallel {
