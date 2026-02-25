@@ -15,6 +15,7 @@ pipeline {
                     reuseNode true
             // This dynamically matches the container user to the Jenkins host user
                     args '-u root' 
+                    args '-u 1000:1000'
                 }
             }
             steps {
@@ -25,7 +26,7 @@ pipeline {
                     npm run build
                     '''
                 }
-            }
+        }
 
         stage('Tests') {
             parallel {
