@@ -11,7 +11,7 @@ pipeline {
             steps {
                 cleanWs()
                 // Throttles npm to prevent core-overload during install
-                sh 'npm config set maxsockets 4'
+                
             }
         }
         stage('Build') {
