@@ -7,7 +7,13 @@ pipeline {
     }
 
     stages {
-
+        stage('Initialize') {
+            steps {
+                cleanWs()
+                // Throttles npm to prevent core-overload during install
+                sh 'npm config set maxsockets 4'
+            }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -32,7 +38,7 @@ pipeline {
                 stage('Unit tests') {
                     agent {
                         docker {
-                            image 'node:18-alpine'
+                            image 'node:18-slim'
                             reuseNode true
                         }
                     }
@@ -136,5 +142,18 @@ pipeline {
                 }
             }
         }
+
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Deployment Successful!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+        }
+    }
     }
 }
