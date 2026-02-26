@@ -90,7 +90,7 @@ pipeline {
                     steps {
                         script {
                             // Extract version from package.json using shell
-                            def appVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+                            def pkgVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
                             
                             withEnv(["REACT_APP_VERSION=${appVersion}"]) {
                             sh '''
