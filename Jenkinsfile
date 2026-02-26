@@ -101,7 +101,6 @@ pipeline {
                     }
                     post {
                         always {
-                            sh 'chmod -R 777 test-results'
                             junit 'test-results/junit.xml'
                         }
                     }
