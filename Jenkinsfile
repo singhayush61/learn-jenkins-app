@@ -80,7 +80,6 @@ pipeline {
                         always {
                             sh 'chmod -R 777 test-results'
                             junit 'test-results/junit.xml'
-                            sh 'docker system prune -f'
                         }
                     }
                 }
@@ -170,6 +169,13 @@ pipeline {
                     sh 'chown -R 1000:1000 .'
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
+            }
+        }
+    }
+    post {
+        always {
+            node('') { // This forces the step to run on the base agent/node
+                sh 'docker system prune -f'
             }
         }
     }
