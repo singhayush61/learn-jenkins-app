@@ -70,7 +70,7 @@ pipeline {
                             npm test
                             rm -rf test-results
                             mkdir test-results
-                            npm test -- --watchAll=false --testResultsProcessor="jest-junit" --forceExit
+                            npm test -- --watchAll=false --forceExit
                             '''
                     }
                     post {
