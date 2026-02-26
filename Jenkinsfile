@@ -70,13 +70,15 @@ pipeline {
                             npm test
                             rm -rf test-results
                             mkdir test-results
+                            JEST_JUNIT_OUTPUT_DIR="./test-results/" \
+                            JEST_JUNIT_OUTPUT_NAME="junit.xml" \
                             npm test -- --watchAll=false --forceExit
                             '''
                     }
                     post {
                         always {
                             sh 'chmod -R 777 test-results'
-                            junit 'jest-results/junit.xml'
+                            junit 'test-results/junit.xml'
                         }
                     }
                 }
