@@ -157,6 +157,7 @@ pipeline {
                     echo "Successfully deployed to: $CI_ENVIRONMENT_URL"
                     
                     #CI_ENVIRONMENT_URL=$(jq -r '.deploy_url' deploy-output.json)
+                    npx playwright install
                     npx playwright test  --reporter=html
                 '''
             }
