@@ -85,11 +85,11 @@ pipeline {
                             #test -f build/index.html
                             npm test
                             rm -rf test-results
-                            mkdir test-results
-                            JEST_JUNIT_OUTPUT_DIR="./test-results/" \
-                            JEST_JUNIT_OUTPUT_NAME="junit.xml" \
+                            mkdir -p test-results
+                            JEST_JUNIT_OUTPUT_DIR="./test-results/" 
+                            JEST_JUNIT_OUTPUT_NAME="junit.xml" 
                             chmod 777 test-results
-                            npm test -- --watchAll=false --forceExit
+                            npm test -- --watchAll=false --testResultsProcessor="jest-junit" --ci
                             
                             '''
                     }
