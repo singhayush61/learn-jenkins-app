@@ -176,10 +176,10 @@ pipeline {
             steps {
                 sh '''
                     node --version
-                    netlify --version
+                    npx netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
-                    netlify status
-                    netlify deploy --dir=build --prod
+                    npx netlify status
+                    npx netlify deploy --dir=build --prod
                     npx playwright test  --reporter=html
                 '''
             }
