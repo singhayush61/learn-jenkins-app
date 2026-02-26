@@ -82,14 +82,20 @@ pipeline {
 
                     steps {
                         sh '''
-                            #test -f build/index.html
                             npm test
+                            # 1. Clean and create the folder
                             rm -rf test-results
                             mkdir -p test-results
-                            JEST_JUNIT_OUTPUT_DIR="./test-results/" 
-                            JEST_JUNIT_OUTPUT_NAME="junit.xml" 
                             chmod 777 test-results
-                            npm test -- --watchAll=false --testResultsProcessor="jest-junit" --ci
+                            
+                            # 2. Set the destination for the XML file
+                            export JEST_JUNIT_OUTPUT_DIR="./test-results"
+                            export JEST_JUNIT_OUTPUT_NAME="junit.xml"
+                            
+                            # 3. Run the test script defined in package.json
+                            # Use --watchAll=false to ensure Jest exits
+                            # Use --forceExit to handle those 'open handles' mentioned in your logs
+                            npm test -- --watchAll=false --forceExit
                             
                             '''
                     }
