@@ -133,6 +133,7 @@ pipeline {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.41.0-jammy'
+                    image 'node:20.18'
                     reuseNode true
                     args '-u root'
                 }
@@ -144,7 +145,7 @@ pipeline {
 
             steps {
                 sh '''
-                    npx netlify-cli --version
+                    npx netlify-cli 
                     echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
                     netlify status
                     netlify deploy --dir=build --json > deploy-output.json
