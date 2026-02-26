@@ -44,7 +44,7 @@ pipeline {
                 df -i
                 
                 echo "--- Pruning Docker ---"
-                # Deletes stopped containers and dangling images to free up room
+                
                 docker system prune -f
                 }
             }
