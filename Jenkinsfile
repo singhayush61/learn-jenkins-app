@@ -206,5 +206,17 @@ pipeline {
             }
         }
     }
-
+    
+        post {
+        always {
+            script {
+                // Stop your background app
+                sh 'pkill -f "npx serve" || true'
+                
+                // Wipe everything not actively running
+                // Use this if you find your disk filling up every week
+                sh 'docker system prune -af --volumes'
+                }
+            }
+        }
 }
