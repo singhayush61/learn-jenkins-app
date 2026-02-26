@@ -81,7 +81,10 @@ pipeline {
                             reuseNode true
                         }
                     }
-
+                    environment {
+                    // This overrides the '1.0.8' you wrote in the test file
+                    REACT_APP_VERSION = '0.1.0' 
+                    }
                     steps {
                         script {
                             // Extract version from package.json using shell
