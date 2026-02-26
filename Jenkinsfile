@@ -22,6 +22,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                 sh '''
                     aws --version
+                    echo "Hello s3!" > index.html
+                    aws s3 cp index.html s3://mybuck
                     aws s3 ls
                 '''
                 }
@@ -103,6 +105,8 @@ pipeline {
 
                     post {
                         always {
+                            sh 'chown -R 1000:1000 .'
+                            junit 'test-results/**/*.xml'
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Local E2E', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
