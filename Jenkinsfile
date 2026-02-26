@@ -68,10 +68,14 @@ pipeline {
                         sh '''
                             #test -f build/index.html
                             npm test
-                        '''
+                            rm -rf test-results
+                            mkdir test-results
+                            npm test -- --watchAll=false --testResultsProcessor="jest-junit" --forceExit
+                            '''
                     }
                     post {
                         always {
+                            sh 'chmod -R 777 test-results'
                             junit 'jest-results/junit.xml'
                         }
                     }
