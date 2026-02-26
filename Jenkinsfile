@@ -49,7 +49,7 @@ pipeline {
                     docker system prune -f
                     '''
                 }
-            }
+        }
 
         stage('Build') {
             agent {
@@ -104,7 +104,7 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.41.0-jammy'
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             args '-u root'
                             reuseNode true
                         }
@@ -112,7 +112,7 @@ pipeline {
 
                     steps {
                         sh '''
-                            serve -s build &
+                            npx serve -s build -l 3000 &
                             sleep 10
                             npx playwright test  --reporter=html
                         '''
@@ -126,7 +126,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy staging') {
             agent {
@@ -189,6 +188,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             node('') { // This forces the step to run on the base agent/node
