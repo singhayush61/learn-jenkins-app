@@ -68,7 +68,7 @@ pipeline {
                     steps {
                         sh '''
                             #test -f build/index.html
-                            sh 'npm test -- --watchAll=false --forceExit'
+                            npm test -- --watchAll=false --forceExit
                         '''
                     }
                     post {
