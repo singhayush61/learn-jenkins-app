@@ -84,18 +84,19 @@ pipeline {
 
                     steps {
                         script {
-            // Extract version from package.json using shell
+                            // Extract version from package.json using shell
                             def appVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
                             
                             withEnv(["REACT_APP_VERSION=${appVersion}"]) {
-                                sh '''
-                                    npm install serve wait-on@7.2.0
-                                    npx serve -s build -l 3000 &
-                                    npx wait-on http://localhost:3000 --timeout 60000
-                                    npx playwright test
-                                '''
+                            sh '''
+                                npm install serve wait-on@7.2.0
+                                npx serve -s build -l 3000 &
+                                npx wait-on http://localhost:3000 --timeout 60000
+                                npx playwright test
+                            '''
                             }
                         }
+                    }
 
                     post {
                         always {
@@ -167,5 +168,4 @@ pipeline {
             }
         }
     }
-}
 }
