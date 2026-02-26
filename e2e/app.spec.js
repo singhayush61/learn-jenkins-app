@@ -19,7 +19,7 @@ test('has expected app version', async ({ page }) => {
   await page.goto('/');
 
   // Change this line in your test file:
-  const expectedAppVersion = process.env.REACT_APP_VERSION ? process.env.REACT_APP_VERSION : '0.1.0';
+  const expectedAppVersion = process.env.REACT_APP_VERSION ? process.env.REACT_APP_VERSION : '1.0.8';
 
   console.log(expectedAppVersion);
 
