@@ -34,6 +34,13 @@ pipeline {
             }
         }
 
+        stage('Docker Cleanup') {
+            agent any // This runs on the host server where Docker is installed
+            steps {
+                sh 'docker system prune -f'
+            }
+        }
+        
         stage('Build') {
             agent {
                 docker {
