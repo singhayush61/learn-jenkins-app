@@ -89,6 +89,7 @@ pipeline {
                             mkdir test-results
                             JEST_JUNIT_OUTPUT_DIR="./test-results/" \
                             JEST_JUNIT_OUTPUT_NAME="junit.xml" \
+                            chmod 777 test-results
                             npm test -- --watchAll=false --forceExit
                             
                             '''
