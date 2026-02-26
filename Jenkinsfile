@@ -4,10 +4,8 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '89df36c3-02cd-4dcc-a7af-8f6abd236972'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-
         REACT_APP_VERSION = "1.0.$BUILD_ID"
     }
-
 
     stages {
 
@@ -148,8 +146,17 @@ pipeline {
                     
                     echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
                     npx netlify status
+                    #npx netlify deploy --dir=build --json > deploy-output.json
+
+                    # 1. Run deploy and SAVE the output to a file
                     npx netlify deploy --dir=build --json > deploy-output.json
-                    CI_ENVIRONMENT_URL=$(jq -r '.deploy_url' deploy-output.json)
+                    
+                    # 2. Extract the URL using the Node.js trick (No jq needed!)
+                    CI_ENVIRONMENT_URL=$(node -p "require('./deploy-output.json').deploy_url")
+                    
+                    echo "Successfully deployed to: $CI_ENVIRONMENT_URL"
+                    
+                    #CI_ENVIRONMENT_URL=$(jq -r '.deploy_url' deploy-output.json)
                     npx playwright test  --reporter=html
                 '''
             }
