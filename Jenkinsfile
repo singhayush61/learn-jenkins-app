@@ -61,19 +61,18 @@ pipeline {
                         docker {
                             image 'node:18-alpine'
                             reuseNode true
-                            args '-u root'
                         }
                     }
 
                     steps {
                         sh '''
                             #test -f build/index.html
-                            npm test -- --watchAll=false --forceExit
+                            npm test
                         '''
                     }
                     post {
                         always {
-                            junit 'test-results/junit.xml'
+                            junit 'jest-results/junit.xml'
                         }
                     }
                 }
@@ -81,41 +80,28 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                            args '-u root'
+                            image 'my-playwright'
                             reuseNode true
                         }
                     }
-                    environment {
-                    // This overrides the '1.0.8' you wrote in the test file
-                    REACT_APP_VERSION = '0.1.0' 
-                    }
+
                     steps {
-                        script {
-                            // Extract version from package.json using shell
-                            def pkgVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
-                            
-                            withEnv(["REACT_APP_VERSION=${appVersion}"]) {
-                            sh '''
-                                npm install serve wait-on@7.2.0
-                                npx serve -s build -l 3000 &
-                                npx wait-on http://localhost:3000 --timeout 60000
-                                npx playwright test
-                            '''
-                            }
-                        }
+                        sh '''
+                            serve -s build &
+                            sleep 10
+                            npx playwright test  --reporter=html
+                        '''
                     }
 
                     post {
                         always {
-                            sh 'chown -R 1000:1000 .'
-                            junit 'test-results/**/*.xml'
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Local E2E', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
                 }
             }
         }
+
 
         stage('Deploy staging') {
             agent {
