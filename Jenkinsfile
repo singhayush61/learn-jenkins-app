@@ -138,7 +138,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
+                CI_ENVIRONMENT_URL = 'https://simple-project-ayush.netlify.app/'
             }
 
             steps {
@@ -191,11 +191,4 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            node('') { // This forces the step to run on the base agent/node
-                sh 'docker system prune -f'
-            }
-        }
-    }
 }
