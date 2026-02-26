@@ -83,9 +83,19 @@ pipeline {
 
                     steps {
                         sh '''
-                            serve -s build &
-                            sleep 10
-                            npx playwright test  --reporter=html
+                            # 1. Install dependencies locally in this container
+                            npm install serve wait-on
+
+                            # 2. Start the server in the background using npx
+                            # The -l 3000 ensures it's on the port Playwright expects
+                            npx serve -s build -l 3000 & 
+
+                            # 3. Wait for the server to be ready (up to 60 seconds)
+                            # This is much more reliable than 'sleep 10'
+                            npx wait-on http://localhost:3000 --timeout 60000
+
+                            # 4. Run the tests
+                            npx playwright test --reporter=html
                         '''
                     }
 
