@@ -73,12 +73,14 @@ pipeline {
                             JEST_JUNIT_OUTPUT_DIR="./test-results/" \
                             JEST_JUNIT_OUTPUT_NAME="junit.xml" \
                             npm test -- --watchAll=false --forceExit
+                            
                             '''
                     }
                     post {
                         always {
                             sh 'chmod -R 777 test-results'
                             junit 'test-results/junit.xml'
+                            sh 'docker system prune -f'
                         }
                     }
                 }
