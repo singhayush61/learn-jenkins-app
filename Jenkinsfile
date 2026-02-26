@@ -153,6 +153,11 @@ pipeline {
                 always {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
+                always {
+            // This runs at the very end to ensure Jenkins user (1000) 
+            // owns the files for the next checkout/clean.
+                    sh 'chown -R 1000:1000 .' 
+                }
             }
         }
     }
