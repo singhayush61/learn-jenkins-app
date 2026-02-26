@@ -37,10 +37,18 @@ pipeline {
         stage('Docker Cleanup') {
             agent any // This runs on the host server where Docker is installed
             steps {
-                sh 'docker system prune -f'
+                echo "--- Checking Disk Space ---"
+                df -h
+                
+                echo "--- Checking Inodes ---"
+                df -i
+                
+                echo "--- Pruning Docker ---"
+                # Deletes stopped containers and dangling images to free up room
+                docker system prune -f
+                }
             }
-        }
-        
+
         stage('Build') {
             agent {
                 docker {
