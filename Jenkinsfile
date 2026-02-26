@@ -207,7 +207,7 @@ pipeline {
         }
     }
     
-        post {
+    post {
         always {
             script {
                 // Stop your background app
